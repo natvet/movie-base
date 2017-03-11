@@ -42,6 +42,7 @@ button:focus {
 }
 
 .movie-list-item {
+    position: relative;
     display: inline-block;
     min-height: 300px;
     width: 32%;
@@ -57,7 +58,7 @@ button:focus {
     bottom: 20px;
     padding: 15px 0;
     text-align: center;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, .8);
     color: rgba(255, 255, 255, .7);
     border-radius: 100px;
 }
@@ -68,12 +69,24 @@ button:focus {
 }
 
 .my-chart {
+    display: none;
     position: absolute;
     top: 0;
+    background-color: rgba(0, 0, 0, .8);
     width: 100%;
     height: 100%;
 }
 
 .my-chart-canvas {
-    
+    width: 90%;
+    position: absolute;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+}
+
+.average-rating {
+    text-align: center;
+    color: rgba(255, 255, 255, .7);
+    margin-top: 50px;
+    font-size: 20px;
 }

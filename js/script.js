@@ -3,9 +3,9 @@ $(document).ready(function () {
     function createList(movies) {
         movies.map(function (movie) {
             var title = $('<div>').text(movie.title).addClass('movie-title'),
-            id = movie.id,
-            poster = $('<img>').attr('src', movie.poster).addClass('movie-poster'),
-            chart = $('<div>').addClass('my-chart');
+                id = movie.id,
+                poster = $('<img>').attr('src', movie.poster).addClass('movie-poster'),
+                chart = $('<div>').addClass('my-chart');
             $('<div>').appendTo('.movie-list').attr('data-id', id).append(poster).append(title).append(chart).addClass('movie-list-item');
         });
     }
@@ -53,13 +53,18 @@ $(document).ready(function () {
     }
 
     function showRating(ratings) {
-        $('.my-chart-canvas').remove();
+        $('.my-chart').fadeOut(500);
+        $('.my-chart').empty();
         var result = [],
             id = ratings[0].movie_id,
+            addedRatings = 0,
+            averageRating,
             chartCanvas = $('<canvas>').attr('id', 'myChart' + id).addClass('my-chart-canvas'),
             chart = $("[data-id='" + id + "']").find('.my-chart').append(chartCanvas),
             ctx,
             myChart;
+        chart.fadeIn(500);
+
         for (var i = 1; i <= 5; i++) {
             var filtered = ratings.filter(function (movie) {
                 return movie.rating === i;
@@ -67,6 +72,12 @@ $(document).ready(function () {
             var frequency = filtered.length;
             result.push(frequency);
         }
+
+        ratings.map(function (rating) {
+            addedRatings += rating.rating;
+        })
+        averageRating = (addedRatings/ratings.length).toFixed(1);
+        $('<p>').text(averageRating).addClass('average-rating').appendTo(chart);
         ctx = $('#myChart' + id);
         myChart = new Chart(ctx, {
             type: 'bar',
