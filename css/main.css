@@ -1,6 +1,14 @@
 body {
     background-color: #000000;
     font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+}
+
+button {
+    font-size: 20px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
 }
 
 button:focus {
@@ -23,10 +31,6 @@ button:focus {
 
 .sort-button {
     color: #ffffff;
-    background-color: transparent;
-    border: 0;
-    font-size: 18px;
-    cursor: pointer;
 }
 
 .sort-button:hover {
@@ -46,7 +50,6 @@ button:focus {
     display: inline-block;
     min-height: 300px;
     width: 32%;
-    position: relative;
     margin: 0 5px;
     cursor: pointer;
 }
@@ -55,12 +58,12 @@ button:focus {
     display: none;
     position: absolute;
     width: 100%;
-    bottom: 20px;
+    top: 0;
     padding: 15px 0;
     text-align: center;
     background-color: rgba(0, 0, 0, .8);
     color: rgba(255, 255, 255, .7);
-    border-radius: 100px;
+    z-index: 1;
 }
 
 .movie-poster {
@@ -69,6 +72,7 @@ button:focus {
 }
 
 .my-chart {
+    z-index: 0;
     display: none;
     position: absolute;
     top: 0;
@@ -88,5 +92,13 @@ button:focus {
     text-align: center;
     color: rgba(255, 255, 255, .7);
     margin-top: 50px;
-    font-size: 20px;
+    font-size: 25px;
+}
+
+.rate-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    color: rgba(255, 255, 255, .7);
 }

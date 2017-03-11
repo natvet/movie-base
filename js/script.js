@@ -76,39 +76,33 @@ $(document).ready(function () {
         ratings.map(function (rating) {
             addedRatings += rating.rating;
         })
-        averageRating = (addedRatings/ratings.length).toFixed(1);
-        $('<p>').text(averageRating).addClass('average-rating').appendTo(chart);
+        averageRating = (addedRatings / ratings.length).toFixed(1);
+        $('<p>').text(averageRating + '/5').addClass('average-rating').appendTo(chart);
+        chart.append('<button class="rate-button" data-selector="rate-button">Rate</button>');
         ctx = $('#myChart' + id);
         myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [1, 2, 3, 4, 5],
+                labels: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars'],
                 datasets: [{
                     label: '# of Votes',
                     data: result,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1
+                        '#ffffff',
+                        '#ffffff',
+                        '#ffffff',
+                        '#ffffff',
+                        '#ffffff'
+                    ]
                 }]
             },
             options: {
+                legend: {
+                    display: false
+                },
                 scales: {
                     yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
+                        display: false
                     }]
                 }
             }
@@ -130,4 +124,5 @@ $(document).ready(function () {
             })
     }
     fetchMovies();
+
 });
