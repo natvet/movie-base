@@ -53,56 +53,55 @@ $(document).ready(function () {
     }
 
     function showRating(ratings) {
+        $('.my-chart-canvas').remove();
         var result = [],
             id = ratings[0].movie_id,
             chartCanvas = $('<canvas>').attr('id', 'myChart' + id).addClass('my-chart-canvas'),
             chart = $("[data-id='" + id + "']").find('.my-chart').append(chartCanvas),
             ctx,
             myChart;
-        // for (var i = 1; i <= 5; i++) {
-        //     var filtered = ratings.filter(function (movie) {
-        //         return movie.rating === i;
-        //     });
-        //     var frequency = filtered.length;
-        //     result.push(frequency);
-        // }
-        
-        // // $('.my-chart-canvas').remove();
-        // ctx = $('#myChart' + id); //todo remove old chart
-        // myChart = new Chart(ctx, {
-        //     type: 'bar',
-        //     data: {
-        //         labels: [1, 2, 3, 4, 5],
-        //         datasets: [{
-        //             label: '# of Votes',
-        //             data: result,
-        //             backgroundColor: [
-        //                 'rgba(255, 99, 132, 0.2)',
-        //                 'rgba(54, 162, 235, 0.2)',
-        //                 'rgba(255, 206, 86, 0.2)',
-        //                 'rgba(75, 192, 192, 0.2)',
-        //                 'rgba(153, 102, 255, 0.2)'
-        //             ],
-        //             borderColor: [
-        //                 'rgba(255,99,132,1)',
-        //                 'rgba(54, 162, 235, 1)',
-        //                 'rgba(255, 206, 86, 1)',
-        //                 'rgba(75, 192, 192, 1)',
-        //                 'rgba(153, 102, 255, 1)'
-        //             ],
-        //             borderWidth: 1
-        //         }]
-        //     },
-        //     options: {
-        //         scales: {
-        //             yAxes: [{
-        //                 ticks: {
-        //                     beginAtZero: true
-        //                 }
-        //             }]
-        //         }
-        //     }
-        // });
+        for (var i = 1; i <= 5; i++) {
+            var filtered = ratings.filter(function (movie) {
+                return movie.rating === i;
+            });
+            var frequency = filtered.length;
+            result.push(frequency);
+        }
+        ctx = $('#myChart' + id);
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [1, 2, 3, 4, 5],
+                datasets: [{
+                    label: '# of Votes',
+                    data: result,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
     }
 
     function fetchMovies() {
