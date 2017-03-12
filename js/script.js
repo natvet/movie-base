@@ -52,6 +52,10 @@ $(document).ready(function () {
                 .then((resp) => resp.json())
                 .then(function (data) {
                     showRating(data);
+                    $('.stars').on('click', function (e) {
+                        e.stopPropagation()
+                        console.log('hej');
+                    });
                 })
                 .catch(function () {
                     console.log('error2');
@@ -129,6 +133,34 @@ $(document).ready(function () {
             }
         });
     }
+
+    // function addRating() {
+    //     $('.rate-button').on('click', function () {
+    //         //todo get parents id
+    //         var data = {
+    //             "rating": 2
+    //         }
+    //         var request = new Request('https://movie-ranking.herokuapp.com/movies/11/ratings', {
+    //             method: 'POST',
+    //             body: JSON.stringify(data),
+    //             headers: new Headers({
+    //                 'Content-Type': 'application/json'
+    //             })
+    //         })
+    //         console.log(data);
+    //         fetch(request)
+    //             .then(function () {
+    //                 console.log('super');
+    //             });
+    //     })
+    // }
+
+    // function getRating() {
+    //     var checkedRadio = $('.stars input:checked'); //tylko w biezacym
+    //     console.log(checkedRadio.val());
+    // };
+
+
 
     function fetchMovies() {
         var movies;

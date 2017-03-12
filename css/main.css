@@ -187,6 +187,9 @@ button:focus {
 }
 
 @media (min-width:768px) {
+    body {
+        text-align: left;
+    }
     .page-header {
         font-size: 60px;
     }
