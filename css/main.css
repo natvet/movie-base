@@ -104,52 +104,6 @@ button:focus {
     transform: translate3d(-50%, -50%, 0);
 }
 
-.stars {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row-reverse;
-    color: #ffffff;
-}
-
-.stars input {
-    position: absolute;
-    left: -99999px;
-}
-
-.stars label {
-    width: 20px;
-    height: 30px;
-    padding: 5px;
-    color: transparent;
-}
-
-.stars label::before {
-    content: '★';
-    color: rgba(255, 255, 255, .7);
-    font-size: 20px;
-    line-height: 30px;
-    /*margin-right: -100%;*/
-}
-
-.stars label:hover::before,
-.stars label:hover~label::before,
-.stars input:checked~label::before {
-    color: #f9ff0a;
-}
-
-.stars-desc {
-    position: absolute;
-    bottom: 10px;
-    font-size: 14px;
-    width: 100%;
-    text-align: center;
-    padding: 0 5px;
-}
-
 @media (min-width:550px) {
     body {
         font-size: 20px;
@@ -169,12 +123,40 @@ button:focus {
         margin-top: 70px;
         font-size: 25px;
     }
-    .stars label {
-        width: 30px;
-    }
-    .stars label::before {
-        font-size: 30px;
-    }
+}
+
+
+/* Rating Star Widgets Style */
+
+.rating-stars ul {
+    text-align: center;
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+}
+
+.rating-stars ul>li.star {
+    display: inline-block;
+    font-size: 27px;
+    margin: 2px;
+}
+
+.rating-stars ul>li.star.hover>span.fa {
+    color: #f9ff0a;
+}
+
+.rating-stars ul>li.star.selected>span.fa {
+    color: #f9ff0a;
+}
+
+.stars-desc {
+    position: absolute;
+    bottom: 25px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
 }
 
 @media (min-width:650px) {

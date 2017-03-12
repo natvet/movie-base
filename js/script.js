@@ -8,9 +8,13 @@ $(document).ready(function () {
                 poster = $('<img>').attr('src', movie.poster).addClass('movie-poster'),
                 averageRating = $('<p>').addClass('average-rating'),
                 chart = $('<div>').addClass('my-chart'),
-                starRating = $('<div>').html('<input type="radio" id="star5" name="star" value="5"><label for="star5"> Five Stars </label><input type="radio" id="star4" name="star" value="4"><label for="star4"> Four Stars </label><input type="radio" id="star3" name="star" value="3"><label for="star3"> Three Star </label><input type="radio" id="star2" name="star" value="2"><label for="star2"> Two Stars </label><input type="radio" id="star1" name="star" value="1"><label for="star1"> One Star </label>')
-                .addClass('stars'),
+                starList = $('<ul>').attr('id', 'stars').attr('data-selector', 'star' + id),
+                starRating = $('<div>').addClass('rating-stars').append(starList),
                 starDesc = $('<p>').text('Click to rate').addClass('stars-desc');
+            for (var i = 1; i <= 5; i++) {
+                var star = $('<li>').addClass('star').attr('data-value', i).html('<span class="fa">★</span>');
+                starList.append(star);
+            }
             overlay.append(title).append(averageRating).append(chart).append(starRating).append(starDesc);
             $('<div>').appendTo('.movie-list').attr('data-id', id).append(poster).append(overlay).addClass('movie-list-item');
         });
@@ -52,10 +56,7 @@ $(document).ready(function () {
                 .then((resp) => resp.json())
                 .then(function (data) {
                     showRating(data);
-                    $('.stars').on('click', function (e) {
-                        e.stopPropagation()
-                        console.log('hej');
-                    });
+                    addRating();
                 })
                 .catch(function () {
                     console.log('error2');
@@ -104,7 +105,7 @@ $(document).ready(function () {
 
         overlay.find('.average-rating').html('<span class="icon">★ </span>' + averageRating + '/5</span>').addClass('average-rating');
 
-        ctx = $('#myChart' + id);
+        ctx = $('#myChart' + id); //tofo do wydzielenia
         myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -134,33 +135,55 @@ $(document).ready(function () {
         });
     }
 
-    // function addRating() {
-    //     $('.rate-button').on('click', function () {
-    //         //todo get parents id
-    //         var data = {
-    //             "rating": 2
-    //         }
-    //         var request = new Request('https://movie-ranking.herokuapp.com/movies/11/ratings', {
-    //             method: 'POST',
-    //             body: JSON.stringify(data),
-    //             headers: new Headers({
-    //                 'Content-Type': 'application/json'
-    //             })
-    //         })
-    //         console.log(data);
-    //         fetch(request)
-    //             .then(function () {
-    //                 console.log('super');
-    //             });
-    //     })
-    // }
 
-    // function getRating() {
-    //     var checkedRadio = $('.stars input:checked'); //tylko w biezacym
-    //     console.log(checkedRadio.val());
-    // };
+    function starHover() {
+        $('#stars li').on('mouseover', function () {
+            var onStar = parseInt($(this).data('value'), 10); 
+            $(this).parent().children('li.star').each(function (e) {
+                if (e < onStar) {
+                    $(this).addClass('hover');
+                } else {
+                    $(this).removeClass('hover');
+                }
+            });
+        }).on('mouseout', function () {
+            $(this).parent().children('li.star').each(function (e) {
+                $(this).removeClass('hover');
+            });
+        });
+    }
 
 
+    function addRating() {
+        $('#stars li').on('click', function (e) {
+            e.stopPropagation();
+            var ratingValue;
+            var id = $(this).closest('.movie-list-item').attr('data-id');
+            var onStar = parseInt($(this).data('value'), 10);
+            var stars = $(this).parent().children('li.star');
+            for (i = 0; i < stars.length; i++) {
+                $(stars[i]).removeClass('selected');
+            }
+            for (i = 0; i < onStar; i++) {
+                $(stars[i]).addClass('selected');
+            }
+            ratingValue = $('#stars li.selected').last().attr('data-value');
+            var data = {
+                "rating": ratingValue
+            }
+            var request = new Request('https://movie-ranking.herokuapp.com/movies/' + id + '/ratings', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            })
+            fetch(request)
+                .then(function () {
+                    console.log('success');
+                });
+        })
+    }
 
     function fetchMovies() {
         var movies;
@@ -170,6 +193,7 @@ $(document).ready(function () {
                 movies = data;
                 createList(movies);
                 sortMovies(movies);
+                starHover();
                 fetchRating();
             })
             .catch(function () {
