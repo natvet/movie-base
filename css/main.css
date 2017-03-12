@@ -58,6 +58,7 @@ button:focus {
 .movie-list-item-overlay {
     display: none;
     background-color: rgba(0, 0, 0, .8);
+    color: rgba(255, 255, 255, .7);
     position: absolute;
     height: 100%;
     width: 100%;
@@ -71,7 +72,6 @@ button:focus {
     top: 0;
     padding: 15px 5px;
     text-align: center;
-    color: rgba(255, 255, 255, .7);
     z-index: 1;
 }
 
@@ -124,7 +124,6 @@ button:focus {
     align-items: center;
     flex-direction: row-reverse;
     color: #ffffff;
-    overflow: hidden;
 }
 
 .stars input {
@@ -136,6 +135,7 @@ button:focus {
     width: 30px;
     height: 30px;
     padding: 5px;
+    color: transparent;
 }
 
 .stars label::before {
@@ -150,4 +150,13 @@ button:focus {
 .stars label:hover~label::before,
 .stars input:checked~label::before {
     color: #f9ff0a;
+}
+
+.stars-desc {
+    position: absolute;
+    bottom: 10px;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    padding: 0 5px;
 }

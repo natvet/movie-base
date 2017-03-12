@@ -9,8 +9,9 @@ $(document).ready(function () {
                 chart = $('<div>').addClass('my-chart'),
                 rateButton = $('<button>').text('Rate').addClass('rate-button'),
                 starRating = $('<div>').html('<input type="radio" id="star5" name="star" value="5"><label for="star5"> Five Stars </label><input type="radio" id="star4" name="star" value="4"><label for="star4"> Four Stars </label><input type="radio" id="star3" name="star" value="3"><label for="star3"> Three Star </label><input type="radio" id="star2" name="star" value="2"><label for="star2"> Two Stars </label><input type="radio" id="star1" name="star" value="1"><label for="star1"> One Star </label>')
-                .addClass('stars');
-            overlay.append(title).append(chart).append(starRating);
+                .addClass('stars'),
+                starDesc = $('<p>').text('Click to rate').addClass('stars-desc');
+            overlay.append(title).append(chart).append(starRating).append(starDesc);
             $('<div>').appendTo('.movie-list').attr('data-id', id).append(poster).append(overlay).addClass('movie-list-item');
         });
         addRating();
@@ -21,7 +22,7 @@ $(document).ready(function () {
         $('#sortButton').on('click', function (e) {
             $(this).toggleClass('ascending');
             if (!$(this).hasClass('ascending')) {
-                $(this).text('A-Z');
+                $(this).text('A-Z ↓');
                 movies.sort(function (a, b) {
                     if (b.title < a.title)
                         return -1;
@@ -30,7 +31,7 @@ $(document).ready(function () {
                     return 0;
                 })
             } else {
-                $(this).text('Z-A');
+                $(this).text('A-Z ↑');
                 movies.sort(function (a, b) {
                     if (a.title < b.title)
                         return -1;
@@ -140,12 +141,12 @@ $(document).ready(function () {
         })
     }
 
-    function getRating() {
-        var checkedRadio = $('.stars input:checked');
-        console.log(checkedRadio.val());
-    };
+    // function getRating() {
+    //     var checkedRadio = $('.stars input:checked');
+    //     console.log(checkedRadio.val());
+    // };
 
-    // $('.stars').on('click', getRating);
+    // // $('.stars').on('click', getRating);
 
     function fetchMovies() {
         var movies;
