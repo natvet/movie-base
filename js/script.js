@@ -1,4 +1,19 @@
 $(document).ready(function () {
+    function fetchMovies() {
+        var movies;
+        fetch('https://movie-ranking.herokuapp.com/movies')
+            .then((resp) => resp.json())
+            .then(function (data) {
+                movies = data;
+                createList(movies);
+                sortMovies(movies);
+                starHover();
+                fetchRating();
+            })
+            .catch(function () {
+                console.log('error');
+            })
+    }
 
     function createList(movies) {
         movies.map(function (movie) {
@@ -45,7 +60,6 @@ $(document).ready(function () {
             }
             $('.movie-list-item').remove();
             createList(movies);
-            fetchRating();
         });
     }
 
@@ -85,26 +99,7 @@ $(document).ready(function () {
         return averageRating;
     }
 
-    function showRating(ratings) {
-        var frequency = getFrequency(ratings),
-            id = ratings[0].movie_id,
-            averageRating = getAverage(ratings),
-            overlay = $("[data-id='" + id + "']").find('.movie-list-item-overlay'),
-            chartCanvas = $('<canvas>').attr('id', 'myChart' + id).addClass('my-chart-canvas'),
-            chart = $("[data-id='" + id + "']").find('.my-chart').append(chartCanvas),
-            ctx,
-            myChart;
-
-        $('body').on('click', function () {
-            $('.my-chart').empty();
-            $('.movie-list-item-overlay').fadeOut(500);
-        })
-
-        overlay.fadeIn(500);
-        chart.fadeIn(500);
-
-        overlay.find('.average-rating').html('<span class="icon">★ </span>' + averageRating + '/5</span>').addClass('average-rating');
-
+    function createChart(id, data) {
         ctx = $('#myChart' + id); //tofo do wydzielenia
         myChart = new Chart(ctx, {
             type: 'bar',
@@ -112,7 +107,7 @@ $(document).ready(function () {
                 labels: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars'],
                 datasets: [{
                     label: '# of Votes',
-                    data: frequency,
+                    data: data,
                     backgroundColor: [
                         'rgba(255, 255, 255, .7)',
                         'rgba(255, 255, 255, .7)',
@@ -135,10 +130,28 @@ $(document).ready(function () {
         });
     }
 
+    function showRating(ratings) {
+        var frequency = getFrequency(ratings),
+            id = ratings[0].movie_id,
+            averageRating = getAverage(ratings),
+            overlay = $("[data-id='" + id + "']").find('.movie-list-item-overlay'),
+            chartCanvas = $('<canvas>').attr('id', 'myChart' + id).addClass('my-chart-canvas'),
+            chart = $("[data-id='" + id + "']").find('.my-chart').append(chartCanvas),
+            ctx,
+            myChart;
+        $('body').on('click', function () {
+            $('.my-chart').empty();
+            $('.movie-list-item-overlay').fadeOut(500);
+        })
+        overlay.fadeIn(500);
+        chart.fadeIn(500);
+        overlay.find('.average-rating').html('<span class="icon">★ </span>' + averageRating + '/5</span>').addClass('average-rating');
+        createChart(id, frequency);
+    }
 
     function starHover() {
         $('#stars li').on('mouseover', function () {
-            var onStar = parseInt($(this).data('value'), 10); 
+            var onStar = parseInt($(this).data('value'), 10);
             $(this).parent().children('li.star').each(function (e) {
                 if (e < onStar) {
                     $(this).addClass('hover');
@@ -152,7 +165,6 @@ $(document).ready(function () {
             });
         });
     }
-
 
     function addRating() {
         $('#stars li').on('click', function (e) {
@@ -180,25 +192,12 @@ $(document).ready(function () {
             })
             fetch(request)
                 .then(function () {
-                    console.log('success');
-                });
+                    $("[data-id='" + id + "']").find('.stars-desc').fadeOut(function () {
+                        $(this).text('Thank you for your vote').fadeIn();
+                    });
+                })
         })
     }
 
-    function fetchMovies() {
-        var movies;
-        fetch('https://movie-ranking.herokuapp.com/movies')
-            .then((resp) => resp.json())
-            .then(function (data) {
-                movies = data;
-                createList(movies);
-                sortMovies(movies);
-                starHover();
-                fetchRating();
-            })
-            .catch(function () {
-                console.log('error');
-            })
-    }
-    fetchMovies();
+    fetchMovies(); 
 });
