@@ -2,12 +2,19 @@ $(document).ready(function () {
 
     function createList(movies) {
         movies.map(function (movie) {
-            var title = $('<div>').text(movie.title).addClass('movie-title'),
+            var overlay = $('<div>').addClass('movie-list-item-overlay'),
+                title = $('<div>').text(movie.title).addClass('movie-title'),
                 id = movie.id,
                 poster = $('<img>').attr('src', movie.poster).addClass('movie-poster'),
-                chart = $('<div>').addClass('my-chart');
-            $('<div>').appendTo('.movie-list').attr('data-id', id).append(poster).append(title).append(chart).addClass('movie-list-item');
+                chart = $('<div>').addClass('my-chart'),
+                rateButton = $('<button>').text('Rate').addClass('rate-button'),
+                starRating = $('<div>').html('<input type="radio" id="star5" name="star" value="5"><label for="star5"> Five Stars </label><input type="radio" id="star4" name="star" value="4"><label for="star4"> Four Stars </label><input type="radio" id="star3" name="star" value="3"><label for="star3"> Three Star </label><input type="radio" id="star2" name="star" value="2"><label for="star2"> Two Stars </label><input type="radio" id="star1" name="star" value="1"><label for="star1"> One Star </label>')
+                .addClass('stars');
+            overlay.append(title).append(chart).append(starRating);
+            $('<div>').appendTo('.movie-list').attr('data-id', id).append(poster).append(overlay).addClass('movie-list-item');
         });
+        addRating();
+        $('.sort-button').fadeIn(500);
     }
 
     function sortMovies(movies) {
@@ -53,19 +60,23 @@ $(document).ready(function () {
     }
 
     function showRating(ratings) {
-        $('.my-chart').fadeOut(500);
-        $('.my-chart').empty();
+        $('body').on('click', function () {
+            $('.my-chart').empty();
+            $('.movie-list-item-overlay').fadeOut(500);
+        })
         var result = [],
             id = ratings[0].movie_id,
             addedRatings = 0,
             averageRating,
+            overlay = $("[data-id='" + id + "']").find('.movie-list-item-overlay'),
             chartCanvas = $('<canvas>').attr('id', 'myChart' + id).addClass('my-chart-canvas'),
             chart = $("[data-id='" + id + "']").find('.my-chart').append(chartCanvas),
             ctx,
             myChart;
+        overlay.fadeIn(500);
         chart.fadeIn(500);
 
-        for (var i = 1; i <= 5; i++) {
+        for (var i = 1; i <= 5; i++) { //todo wydzielic funkcje
             var filtered = ratings.filter(function (movie) {
                 return movie.rating === i;
             });
@@ -77,8 +88,7 @@ $(document).ready(function () {
             addedRatings += rating.rating;
         })
         averageRating = (addedRatings / ratings.length).toFixed(1);
-        $('<p>').text(averageRating + '/5').addClass('average-rating').appendTo(chart);
-        chart.append('<button class="rate-button" data-selector="rate-button">Rate</button>');
+        $('<p>').html('<span class="icon">★ </span>' + averageRating + '/5</span>').addClass('average-rating').appendTo(chart);
         ctx = $('#myChart' + id);
         myChart = new Chart(ctx, {
             type: 'bar',
@@ -88,11 +98,11 @@ $(document).ready(function () {
                     label: '# of Votes',
                     data: result,
                     backgroundColor: [
-                        '#ffffff',
-                        '#ffffff',
-                        '#ffffff',
-                        '#ffffff',
-                        '#ffffff'
+                        'rgba(255, 255, 255, .7)',
+                        'rgba(255, 255, 255, .7)',
+                        'rgba(255, 255, 255, .7)',
+                        'rgba(255, 255, 255, .7)',
+                        'rgba(255, 255, 255, .7)'
                     ]
                 }]
             },
@@ -109,6 +119,34 @@ $(document).ready(function () {
         });
     }
 
+    function addRating() {
+        $('.rate-button').on('click', function () {
+            //todo get parents id
+            var data = {
+                "rating": 2
+            }
+            var request = new Request('https://movie-ranking.herokuapp.com/movies/11/ratings', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            })
+            console.log(data);
+            fetch(request)
+                .then(function () {
+                    console.log('super');
+                });
+        })
+    }
+
+    function getRating() {
+        var checkedRadio = $('.stars input:checked');
+        console.log(checkedRadio.val());
+    };
+
+    // $('.stars').on('click', getRating);
+
     function fetchMovies() {
         var movies;
         fetch('https://movie-ranking.herokuapp.com/movies')
@@ -124,5 +162,4 @@ $(document).ready(function () {
             })
     }
     fetchMovies();
-
 });

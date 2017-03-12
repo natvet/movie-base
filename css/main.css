@@ -31,6 +31,7 @@ button:focus {
 
 .sort-button {
     color: #ffffff;
+    display: none;
 }
 
 .sort-button:hover {
@@ -54,14 +55,22 @@ button:focus {
     cursor: pointer;
 }
 
-.movie-title {
+.movie-list-item-overlay {
     display: none;
+    background-color: rgba(0, 0, 0, .8);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+}
+
+.movie-title {
+    font-size: 22px;
     position: absolute;
     width: 100%;
     top: 0;
-    padding: 15px 0;
+    padding: 15px 5px;
     text-align: center;
-    background-color: rgba(0, 0, 0, .8);
     color: rgba(255, 255, 255, .7);
     z-index: 1;
 }
@@ -76,13 +85,11 @@ button:focus {
     display: none;
     position: absolute;
     top: 0;
-    background-color: rgba(0, 0, 0, .8);
     width: 100%;
     height: 100%;
 }
 
 .my-chart-canvas {
-    width: 90%;
     position: absolute;
     top: 50%;
     transform: translate3d(0, -50%, 0);
@@ -91,8 +98,13 @@ button:focus {
 .average-rating {
     text-align: center;
     color: rgba(255, 255, 255, .7);
-    margin-top: 50px;
+    margin-top: 70px;
     font-size: 25px;
+}
+
+.average-rating .icon {
+    color: #f9ff0a;
+    font-size: 27px;
 }
 
 .rate-button {
@@ -101,4 +113,41 @@ button:focus {
     left: 50%;
     transform: translate3d(-50%, 0, 0);
     color: rgba(255, 255, 255, .7);
+}
+
+.stars {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.stars input {
+    position: absolute;
+    left: -99999px;
+}
+
+.stars label {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+}
+
+.stars label::before {
+    content: '★';
+    color: rgba(255, 255, 255, .7);
+    font-size: 30px;
+    line-height: 30px;
+    margin-right: -100%;
+}
+
+.stars label:hover::before,
+.stars label:hover~label::before,
+.stars input:checked~label::before {
+    color: #f9ff0a;
 }
