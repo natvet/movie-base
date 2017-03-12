@@ -1,11 +1,13 @@
 body {
     background-color: #000000;
     font-family: 'Nunito', sans-serif;
-    font-size: 20px;
+    font-size: 16px;
+    width: 100vw;
+    text-align: center;
 }
 
 button {
-    font-size: 20px;
+    font-size: 16px;
     background: transparent;
     border: 0;
     cursor: pointer;
@@ -16,15 +18,13 @@ button:focus {
 }
 
 .page-container {
-    width: 60%;
-    margin: 0 auto;
     padding: 0 25px;
 }
 
 .page-header {
-    font-size: 60px;
+    margin-bottom: 15px;
+    font-size: 40px;
     text-transform: uppercase;
-    /*text-align: center;*/
     color: #ffffff;
     text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ff0015, 0 0 30px #ff0015, 0 0 40px #ff0015, 0 0 55px #ff0015, 0 0 75px #ff0015;
 }
@@ -41,17 +41,13 @@ button:focus {
 
 .movie-list {
     list-style: none;
-    margin: 0;
-    padding: 0;
-    margin: 50px auto 0;
+    margin-top: 20px;
 }
 
 .movie-list-item {
     position: relative;
     display: inline-block;
-    min-height: 300px;
-    width: 32%;
-    margin: 0 5px;
+    width: 80%;
     cursor: pointer;
 }
 
@@ -66,11 +62,11 @@ button:focus {
 }
 
 .movie-title {
-    font-size: 22px;
+    font-size: 16px;
     position: absolute;
     width: 100%;
     top: 0;
-    padding: 15px 5px;
+    padding-top: 10px;
     text-align: center;
     z-index: 1;
 }
@@ -78,6 +74,18 @@ button:focus {
 .movie-poster {
     height: 100%;
     width: 100%;
+}
+
+.average-rating {
+    text-align: center;
+    color: rgba(255, 255, 255, .7);
+    margin-top: 35px;
+    font-size: 18px;
+}
+
+.average-rating .icon {
+    color: #f9ff0a;
+    font-size: 22px;
 }
 
 .my-chart {
@@ -92,27 +100,8 @@ button:focus {
 .my-chart-canvas {
     position: absolute;
     top: 50%;
-    transform: translate3d(0, -50%, 0);
-}
-
-.average-rating {
-    text-align: center;
-    color: rgba(255, 255, 255, .7);
-    margin-top: 70px;
-    font-size: 25px;
-}
-
-.average-rating .icon {
-    color: #f9ff0a;
-    font-size: 27px;
-}
-
-.rate-button {
-    position: absolute;
-    bottom: 20px;
     left: 50%;
-    transform: translate3d(-50%, 0, 0);
-    color: rgba(255, 255, 255, .7);
+    transform: translate3d(-50%, -50%, 0);
 }
 
 .stars {
@@ -132,7 +121,7 @@ button:focus {
 }
 
 .stars label {
-    width: 30px;
+    width: 20px;
     height: 30px;
     padding: 5px;
     color: transparent;
@@ -141,9 +130,9 @@ button:focus {
 .stars label::before {
     content: '★';
     color: rgba(255, 255, 255, .7);
-    font-size: 30px;
+    font-size: 20px;
     line-height: 30px;
-    margin-right: -100%;
+    /*margin-right: -100%;*/
 }
 
 .stars label:hover::before,
@@ -159,4 +148,69 @@ button:focus {
     width: 100%;
     text-align: center;
     padding: 0 5px;
+}
+
+@media (min-width:550px) {
+    body {
+        font-size: 20px;
+    }
+    button {
+        font-size: 20px;
+    }
+    .movie-title {
+        font-size: 22px;
+        padding-top: 15px;
+    }
+    .page-container {
+        width: 80%;
+        margin: 0 auto;
+    }
+    .average-rating {
+        margin-top: 70px;
+        font-size: 25px;
+    }
+    .stars label {
+        width: 30px;
+    }
+    .stars label::before {
+        font-size: 30px;
+    }
+}
+
+@media (min-width:650px) {
+    .page-container {
+        width: 60%;
+    }
+    .movie-list {
+        margin-top: 30px;
+    }
+}
+
+@media (min-width:768px) {
+    .page-header {
+        font-size: 60px;
+    }
+    .movie-list {
+        list-style: none;
+        margin-top: 50px;
+    }
+    .movie-list-item {
+        position: relative;
+        display: inline-block;
+        min-height: 300px;
+        width: 32%;
+        margin: 0 2px;
+    }
+}
+
+@media (min-width:990px) {
+    .movie-list-item {
+        margin: 0 4px;
+    }
+}
+
+@media (min-width:1250px) {
+    .movie-list-item {
+        margin: 0 5px;
+    }
 }
