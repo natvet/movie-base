@@ -11,7 +11,7 @@ $(document).ready(function () {
                 fetchRating();
             })
             .catch(function () {
-                console.log('error');
+                alert('Ooops! Something went wrong! Please try again');
             })
     }
 
@@ -73,7 +73,7 @@ $(document).ready(function () {
                     addRating();
                 })
                 .catch(function () {
-                    console.log('error2');
+                    alert('Ooops! Something went wrong! Please try again');
                 })
         })
     }
