@@ -182,7 +182,7 @@ $(document).ready(function () {
             }
             ratingValue = $('#stars li.selected').last().attr('data-value');
             var data = {
-                "rating": ratingValue
+                'rating': ratingValue
             }
             var request = new Request('https://movie-ranking.herokuapp.com/movies/' + id + '/ratings', {
                 method: 'POST',
