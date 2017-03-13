@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     function fetchMovies() {
         var movies;
         fetch('https://movie-ranking.herokuapp.com/movies')
@@ -17,12 +18,12 @@ $(document).ready(function () {
 
     function createList(movies) {
         movies.map(function (movie) {
-            var overlay = $('<div>').addClass('movie-list-item-overlay'),
+            var overlay = $('<div>').addClass('movie-list-item-overlay').attr('data-selector', 'movie-list-item-overlay'),
                 title = $('<div>').text(movie.title).addClass('movie-title'),
                 id = movie.id,
                 poster = $('<img>').attr('src', movie.poster).addClass('movie-poster'),
-                averageRating = $('<p>').addClass('average-rating'),
-                chart = $('<div>').addClass('my-chart'),
+                averageRating = $('<p>').addClass('average-rating').attr('data-selector', 'average-rating'),
+                chart = $('<div>').addClass('my-chart').attr('data-selector', 'my-chart'),
                 starList = $('<ul>').attr('id', 'stars').attr('data-selector', 'star' + id),
                 starRating = $('<div>').addClass('rating-stars').append(starList),
                 starDesc = $('<p>').text('Click to rate').addClass('stars-desc');
@@ -31,13 +32,13 @@ $(document).ready(function () {
                 starList.append(star);
             }
             overlay.append(title).append(averageRating).append(chart).append(starRating).append(starDesc);
-            $('<div>').appendTo('.movie-list').attr('data-id', id).append(poster).append(overlay).addClass('movie-list-item');
+            $('<div>').appendTo('.movie-list').attr('data-id', id).append(poster).append(overlay).addClass('movie-list-item').attr('data-selector', 'movie-list-item');
         });
-        $('.sort-button').fadeIn(500);
+        $('[data-selector="sort-button"]').fadeIn(500);
     }
 
     function sortMovies(movies) {
-        $('#sortButton').on('click', function (e) {
+        $('[data-selector="sort-button"]').on('click', function (e) {
             $(this).toggleClass('ascending');
             if (!$(this).hasClass('ascending')) {
                 $(this).text('A-Z ↓');
@@ -58,14 +59,14 @@ $(document).ready(function () {
                     return 0;
                 })
             }
-            $('.movie-list-item').remove();
+            $('[data-selector="movie-list-item"]').remove();
             createList(movies);
             fetchRating();
         });
     }
 
     function fetchRating() {
-        $('.movie-list-item').on('click', function (e) {
+        $('[data-selector="movie-list-item"]').on('click', function (e) {
             var id = $(this).attr('data-id');
             fetch('https://movie-ranking.herokuapp.com/movies/' + id + '/ratings')
                 .then((resp) => resp.json())
@@ -81,7 +82,7 @@ $(document).ready(function () {
 
     function getFrequency(ratings) {
         var result = [];
-        for (var i = 1; i <= 5; i++) { //todo wydzielic funkcje
+        for (var i = 1; i <= 5; i++) {
             var filtered = ratings.filter(function (movie) {
                 return movie.rating === i;
             });
@@ -101,7 +102,7 @@ $(document).ready(function () {
     }
 
     function createChart(id, data) {
-        ctx = $('#myChart' + id); //tofo do wydzielenia
+        ctx = $('[data-selector="my-chart' + id + '"]');
         myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -135,18 +136,18 @@ $(document).ready(function () {
         var frequency = getFrequency(ratings),
             id = ratings[0].movie_id,
             averageRating = getAverage(ratings),
-            overlay = $("[data-id='" + id + "']").find('.movie-list-item-overlay'),
-            chartCanvas = $('<canvas>').attr('id', 'myChart' + id).addClass('my-chart-canvas'),
-            chart = $("[data-id='" + id + "']").find('.my-chart').append(chartCanvas),
+            overlay = $("[data-id='" + id + "']").find('[data-selector="movie-list-item-overlay"]'),
+            chartCanvas = $('<canvas>').attr('data-selector', 'my-chart' + id).addClass('my-chart-canvas'),
+            chart = $("[data-id='" + id + "']").find('[data-selector="my-chart"]').append(chartCanvas),
             ctx,
             myChart;
         $('body').on('click', function () {
-            $('.my-chart').empty();
-            $('.movie-list-item-overlay').fadeOut(500);
+            $('[data-selector="my-chart"]').empty();
+            $('[data-selector="movie-list-item-overlay"]').fadeOut(500);
         })
         overlay.fadeIn(500);
         chart.fadeIn(500);
-        overlay.find('.average-rating').html('<span class="icon">★ </span>' + averageRating + '/5</span>').addClass('average-rating');
+        overlay.find('[data-selector="average-rating"]').html('<span class="icon">★ </span>' + averageRating + '/5</span>');
         createChart(id, frequency);
     }
 
@@ -171,7 +172,7 @@ $(document).ready(function () {
         $('#stars li').on('click', function (e) {
             e.stopPropagation();
             var ratingValue;
-            var id = $(this).closest('.movie-list-item').attr('data-id');
+            var id = $(this).closest('[data-selector="movie-list-item"]').attr('data-id');
             var onStar = parseInt($(this).data('value'), 10);
             var stars = $(this).parent().children('li.star');
             for (i = 0; i < stars.length; i++) {
