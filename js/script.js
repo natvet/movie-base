@@ -198,6 +198,5 @@ $(document).ready(function () {
                 })
         })
     }
-
-    fetchMovies(); 
+    fetchMovies();
 });
