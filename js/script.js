@@ -59,7 +59,8 @@ $(document).ready(function () {
                 })
             }
             $('.movie-list-item').remove();
-            fetchMovies();
+            createList(movies);
+            fetchRating();
         });
     }
 
